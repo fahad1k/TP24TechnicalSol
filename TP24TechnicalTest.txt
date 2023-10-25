@@ -17,19 +17,18 @@ Guidance and Additional Notes
 
 Example Payload
 [
-{
-"reference": "string",
-"currencyCode": "string",
-"issueDate": "string",
-"openingValue": 1234.56,
-"paidValue": 1234.56,
-"dueDate": "string",
-"closedDate": "string", //optional
-"cancelled": true|false, // optional "debtorName": "string",
-"debtorReference": "string",
-"debtorAddress1": "string", //optional "debtorAddress2": "string", //optional "debtorTown": "string", //optional "debtorState": "string", //optional "debtorZip": "string", //optional "debtorCountryCode": "string", "debtorRegistrationNumber": "string" //optional
-}
+    {
+    "reference": "string",
+    "currencyCode": "string",
+    "issueDate": "string",
+    "openingValue": 1234.56,
+    "paidValue": 1234.56,
+    "dueDate": "string",
+    "closedDate": "string", //optional
+    "cancelled": true|false, // optional "debtorName": "string",
+    "debtorReference": "string",
+    "debtorAddress1": "string", //optional "debtorAddress2": "string", //optional "debtorTown": "string",             //optional "debtorState": "string", //optional "debtorZip": "string", //optional "debtorCountryCode":             "string", "debtorRegistrationNumber": "string" //optional
+    }
 ]
 
 
-ReceivableDbContext
