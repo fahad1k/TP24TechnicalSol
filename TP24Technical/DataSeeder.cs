@@ -12,7 +12,7 @@ public class DataSeeder
     {
         _context = context;
     }
-
+    // Method to seed receivable data.
     public void SeedReceivables()
     {
         var random = new Random() ;

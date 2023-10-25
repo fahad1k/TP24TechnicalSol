@@ -1,6 +1,4 @@
-﻿
-
-namespace TP24Technical.Tests;
+﻿namespace TP24Technical.Tests;
 
 [TestFixture]
 public class ReceivableServiceTests
@@ -11,6 +9,7 @@ public class ReceivableServiceTests
     [SetUp]
     public void Setup()
     {
+        // Arrange: Initialize test dependencies
         _repository = Substitute.For<IRepository<Receivable>>();
         _receivableService = new ReceivableService(_repository);
     }
@@ -18,106 +17,103 @@ public class ReceivableServiceTests
     [Test]
     public async Task GetReceivableByIdAsync_ExistingId_ReturnsReceivable()
     {
-        // Arrange
+        // Arrange: Prepare data for the test
         const string existingId = "Reference-0";
         var expectedReceivable = new Receivable { Reference = existingId };
         _repository.GetByIdAsync(existingId).Returns(Task.FromResult(expectedReceivable));
 
-        // Act
+        // Act: Execute the test
         var result = await _receivableService.GetReceivableByIdAsync(existingId);
 
-        // Assert
+        // Assert: Verify the test result
         Assert.AreEqual(existingId, result.Reference);
     }
 
     [Test]
     public async Task GetReceivableByIdAsync_NonExistingId_ReturnsNull()
     {
-        // Arrange
+        // Arrange: Prepare data for the test
         const string nonExistingId = "NonExistingReference";
         _repository.GetByIdAsync(nonExistingId).Returns(Task.FromResult((Receivable)null));
 
-        // Act
+        // Act: Execute the test
         var result = await _receivableService.GetReceivableByIdAsync(nonExistingId);
 
-        // Assert
+        // Assert: Verify the test result
         Assert.IsNull(result);
     }
 
     [Test]
     public async Task GetAllReceivablesAsync_ReturnsAllReceivables()
     {
-        // Arrange
+        // Arrange: Prepare data for the test
         var expectedReceivables = new List<Receivable>
         {
             new Receivable { Reference = "Reference-1" },
             new Receivable { Reference = "Reference-2" },
             new Receivable { Reference = "Reference-3" }
         };
-
-       
-
         _repository.GetAllAsync().Returns(expectedReceivables);
 
-        // Act
+        // Act: Execute the test
         var result = await _receivableService.GetAllReceivablesAsync();
 
-        // Assert
+        // Assert: Verify the test result
         CollectionAssert.AreEqual(expectedReceivables, result);
     }
 
     [Test]
     public async Task AddReceivableAsync_ValidReceivable_CallsRepositoryAddAsync()
     {
-        // Arrange
+        // Arrange: Prepare data for the test
         var receivableToAdd = new Receivable { Reference = "NewReceivable" };
 
-        // Act
+        // Act: Execute the test
         await _receivableService.AddReceivableAsync(receivableToAdd);
 
-        // Assert
+        // Assert: Verify that the repository's AddAsync method was called
         await _repository.Received(1).AddAsync(receivableToAdd);
     }
 
     [Test]
     public async Task UpdateReceivableAsync_ValidReceivable_CallsRepositoryUpdateAsync()
     {
-        // Arrange
+        // Arrange: Prepare data for the test
         var receivableToUpdate = new Receivable { Reference = "ExistingReceivable" };
 
-        // Act
+        // Act: Execute the test
         await _receivableService.UpdateReceivableAsync(receivableToUpdate);
 
-        // Assert
+        // Assert: Verify that the repository's UpdateAsync method was called
         await _repository.Received(1).UpdateAsync(receivableToUpdate);
     }
 
     [Test]
     public async Task DeleteReceivableAsync_ExistingId_CallsRepositoryDeleteAsync()
     {
-        // Arrange
+        // Arrange: Prepare data for the test
         const string existingId = "Reference-4";
         var existingReceivable = new Receivable { Reference = existingId };
         _repository.GetByIdAsync(existingId).Returns(Task.FromResult(existingReceivable));
 
-        // Act
+        // Act: Execute the test
         await _receivableService.DeleteReceivableAsync(existingId);
 
-        // Assert
+        // Assert: Verify that the repository's DeleteAsync method was called
         await _repository.Received(1).DeleteAsync(existingReceivable);
     }
 
     [Test]
     public async Task DeleteReceivableAsync_NonExistingId_DoesNotCallRepositoryDeleteAsync()
     {
-        // Arrange
+        // Arrange: Prepare data for the test
         const string nonExistingId = "NonExistingReference";
         _repository.GetByIdAsync(nonExistingId).Returns(Task.FromResult((Receivable)null));
 
-        // Act
+        // Act: Execute the test
         await _receivableService.DeleteReceivableAsync(nonExistingId);
 
-        // Assert
+        // Assert: Verify that the repository's DeleteAsync method was not called
         await _repository.DidNotReceive().DeleteAsync(Arg.Any<Receivable>());
     }
 }

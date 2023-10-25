@@ -7,7 +7,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
+        // Register services in the dependency injection container.
         builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         builder.Services.AddScoped(typeof(IReceivableService ), typeof(ReceivableService));
      
@@ -46,8 +46,7 @@ public class Program
             var dataSeeder = services.GetRequiredService<DataSeeder>();
             dataSeeder.SeedReceivables();
         }
-
-        // Configure the HTTP request pipeline.
+        // Configure the HTTP request/application pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
